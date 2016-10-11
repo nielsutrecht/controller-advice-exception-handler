@@ -34,4 +34,18 @@ public class ErrorController {
     public Callable<ResponseEntity<ErrorDTO>> errorMe(@RequestHeader("user-id") final UUID userId) {
         return () -> ResponseEntity.ok(new ErrorDTO("NO", "ERROR"));
     }
+
+    @RequestMapping(value = "/number/{num}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public Callable<ResponseEntity<ErrorDTO>> errorNum(@PathVariable final int num) {
+        return () -> ResponseEntity.ok(new ErrorDTO("NO", "ERROR"));
+    }
+
+    @RequestMapping(value = "/param", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public Callable<ResponseEntity<ErrorDTO>> errorParam(
+            @RequestParam(name = "number1") final int number1,
+            @RequestParam(name = "number2", required = false) final Integer number2) {
+        return () -> ResponseEntity.ok(new ErrorDTO("NO", "ERROR"));
+    }
 }
