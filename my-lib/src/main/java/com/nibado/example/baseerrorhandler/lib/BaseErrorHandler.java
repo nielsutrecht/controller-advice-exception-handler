@@ -1,5 +1,6 @@
 package com.nibado.example.baseerrorhandler.lib;
 
+import com.nibado.example.baseerrorhandler.lib.exceptions.BaseBadRequestException;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -31,32 +32,35 @@ public abstract class BaseErrorHandler {
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     @ResponseBody
     public ErrorDTO handleHttpRequestMethodNotSupportedException(final HttpRequestMethodNotSupportedException ex) {
-        logThrowable(ex);
-        return construct(ErrorConstants.METHOD_NOT_SUPPORTED);
+        return logAndConstruct(ErrorConstants.METHOD_NOT_SUPPORTED, ex);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ServletRequestBindingException.class)
     @ResponseBody
     public ErrorDTO handleServletRequestBindingException(final ServletRequestBindingException ex) {
-        logThrowable(ex);
-        return construct(ErrorConstants.MISSING_HEADER);
+        return logAndConstruct(ErrorConstants.MISSING_HEADER, ex);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseBody
     public ErrorDTO handleMethodArgumentTypeMismatchException(final MethodArgumentTypeMismatchException ex) {
-        logThrowable(ex);
-        return construct(ErrorConstants.ARGUMENT_TYPE_MISMATCH);
+        return logAndConstruct(ErrorConstants.ARGUMENT_TYPE_MISMATCH, ex);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MissingServletRequestParameterException.class)
     @ResponseBody
     public ErrorDTO handleMissingServletRequestParameterException(final MissingServletRequestParameterException ex) {
-        logThrowable(ex);
-        return construct(ErrorConstants.MISSING_REQUEST_PARAM);
+        return logAndConstruct(ErrorConstants.MISSING_REQUEST_PARAM, ex);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(BaseBadRequestException.class)
+    @ResponseBody
+    public ErrorDTO handleBaseBadRequestException(final BaseBadRequestException ex) {
+        return logAndConstruct(ex.error(), ex);
     }
 
     protected void logThrowable(Throwable t) {
@@ -64,6 +68,16 @@ public abstract class BaseErrorHandler {
     }
 
     protected ErrorDTO construct(Error error) {
-        return new ErrorDTO(prefix + error.getCode(), error.getMessage());
+        return new ErrorDTO(code(error), error.getMessage());
+    }
+
+    protected ErrorDTO logAndConstruct(Error error, Throwable t) {
+        log.error("{} ({}): {}", error.getMessage(), code(error), t.getMessage(), t);
+
+        return construct(error);
+    }
+
+    private String code(Error error) {
+        return prefix + error.getCode();
     }
 }

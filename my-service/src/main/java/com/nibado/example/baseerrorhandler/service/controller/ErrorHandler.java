@@ -1,7 +1,8 @@
-package com.nibado.example.baseerrorhandler.service;
+package com.nibado.example.baseerrorhandler.service.controller;
 
 import com.nibado.example.baseerrorhandler.lib.BaseErrorHandler;
 import com.nibado.example.baseerrorhandler.lib.ErrorDTO;
+import com.nibado.example.baseerrorhandler.service.controller.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,14 +14,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Slf4j
 public class ErrorHandler extends BaseErrorHandler {
     public ErrorHandler() {
-        super("MY", log);
+        super("USER", log);
     }
 
-    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseBody
     public ErrorDTO handleUserNotFoundException(final UserNotFoundException ex) {
-        logThrowable(ex);
-        return construct(ErrorConstants.USER_NOT_FOUND);
+        return logAndConstruct(ErrorConstants.USER_NOT_FOUND, ex);
     }
 }

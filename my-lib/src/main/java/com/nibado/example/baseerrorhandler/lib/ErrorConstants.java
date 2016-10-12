@@ -1,7 +1,7 @@
 package com.nibado.example.baseerrorhandler.lib;
 
 public enum ErrorConstants implements Error {
-    GENERIC("900", "Generic error"),
+    GENERIC("900", "Internal server error"),
     MISSING_HEADER("901", "Missing header in request"),
     METHOD_NOT_SUPPORTED("902", "Method not supported"),
     ARGUMENT_TYPE_MISMATCH("903", "Argument type mismatch"),
