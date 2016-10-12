@@ -1,4 +1,4 @@
-package com.nibado.example.baseerrorhandler.service.controller.exception;
+package com.nibado.example.baseerrorhandler.service.service.exception;
 
 import com.nibado.example.baseerrorhandler.lib.exceptions.BaseBadRequestException;
 import com.nibado.example.baseerrorhandler.service.controller.ErrorConstants;

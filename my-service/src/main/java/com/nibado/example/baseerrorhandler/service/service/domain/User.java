@@ -1,4 +1,4 @@
-package com.nibado.example.baseerrorhandler.service.domain;
+package com.nibado.example.baseerrorhandler.service.service.domain;
 
 import lombok.Data;
 

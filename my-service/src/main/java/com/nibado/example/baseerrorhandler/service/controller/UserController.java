@@ -1,7 +1,7 @@
 package com.nibado.example.baseerrorhandler.service.controller;
 
 import com.nibado.example.baseerrorhandler.service.controller.exception.NotImplementedException;
-import com.nibado.example.baseerrorhandler.service.domain.User;
+import com.nibado.example.baseerrorhandler.service.service.domain.User;
 import com.nibado.example.baseerrorhandler.service.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

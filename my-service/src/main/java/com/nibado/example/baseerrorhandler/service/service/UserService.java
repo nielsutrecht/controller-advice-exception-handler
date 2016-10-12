@@ -1,7 +1,7 @@
 package com.nibado.example.baseerrorhandler.service.service;
 
-import com.nibado.example.baseerrorhandler.service.controller.exception.InvalidSearchParamException;
-import com.nibado.example.baseerrorhandler.service.domain.User;
+import com.nibado.example.baseerrorhandler.service.service.exception.InvalidSearchParamException;
+import com.nibado.example.baseerrorhandler.service.service.domain.User;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
