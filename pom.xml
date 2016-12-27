@@ -12,6 +12,7 @@
     <modules>
         <module>my-lib</module>
         <module>my-service</module>
+        <module>examples</module>
     </modules>
 
     <properties>
