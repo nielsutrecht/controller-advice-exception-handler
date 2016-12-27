@@ -53,7 +53,7 @@ public class UserControllerTest {
     public void testGetUserById_UserUnknown() throws Exception {
         asyncGet("/user/" + USER_UNKNOWN)
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.code", is("USER001")))
+                .andExpect(jsonPath("$.code", is("USER_NOT_FOUND")))
                 .andExpect(jsonPath("$.message", is("User not found")));
     }
 
@@ -61,7 +61,7 @@ public class UserControllerTest {
     public void testGetUserById_InvalidId() throws Exception {
         mockMvc.perform(get("/user/foo"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code", is("USER903")))
+                .andExpect(jsonPath("$.code", is("ARGUMENT_TYPE_MISMATCH")))
                 .andExpect(jsonPath("$.message", is("Argument type mismatch")));
     }
 
@@ -80,7 +80,7 @@ public class UserControllerTest {
     public void testGetUserByHeader_UserUnknown() throws Exception {
         asyncGet("/user/me", userHeaders(USER_UNKNOWN))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.code", is("USER001")))
+                .andExpect(jsonPath("$.code", is("USER_NOT_FOUND")))
                 .andExpect(jsonPath("$.message", is("User not found")));
     }
 
@@ -88,7 +88,7 @@ public class UserControllerTest {
     public void testGetUserByHeader_MissingHeader() throws Exception {
         mockMvc.perform(get("/user/me"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code", is("USER901")))
+                .andExpect(jsonPath("$.code", is("MISSING_HEADER")))
                 .andExpect(jsonPath("$.message", is("Missing header in request")));
     }
 
@@ -96,7 +96,7 @@ public class UserControllerTest {
     public void testGetUserByHeader_InvalidHeader() throws Exception {
         mockMvc.perform(get("/user/me").header("user-id", "foo"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code", is("USER903")))
+                .andExpect(jsonPath("$.code", is("ARGUMENT_TYPE_MISMATCH")))
                 .andExpect(jsonPath("$.message", is("Argument type mismatch")));
     }
 
@@ -130,7 +130,7 @@ public class UserControllerTest {
     public void testFindUser_BadParam() throws Exception {
         asyncGet("/user/find?yearOfBirth=42&limit=100")
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code", is("USER002")))
+                .andExpect(jsonPath("$.code", is("INVALID_PARAM")))
                 .andExpect(jsonPath("$.message", is("Invalid search parameter")));
     }
 
@@ -138,7 +138,7 @@ public class UserControllerTest {
     public void testFindUser_MissingLimit() throws Exception {
         mockMvc.perform(get("/user/find"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code", is("USER904")))
+                .andExpect(jsonPath("$.code", is("MISSING_PARAMETER")))
                 .andExpect(jsonPath("$.message", is("Missing request parameter")));
     }
 
@@ -146,15 +146,15 @@ public class UserControllerTest {
     public void testPostUser_Get() throws Exception {
         mockMvc.perform(get("/user"))
                 .andExpect(status().isMethodNotAllowed())
-                .andExpect(jsonPath("$.code", is("USER902")))
-                .andExpect(jsonPath("$.message", is("Method not supported")));
+                .andExpect(jsonPath("$.code", is("METHOD_NOT_SUPPORTED")))
+                .andExpect(jsonPath("$.message", is("HTTP method not supported")));
     }
 
     @Test
     public void testPostUser_NotImplemented() throws Exception {
         mockMvc.perform(post("/user").content("{}"))
                 .andExpect(status().isInternalServerError())
-                .andExpect(jsonPath("$.code", is("USER900")))
+                .andExpect(jsonPath("$.code", is("SERVER_ERROR")))
                 .andExpect(jsonPath("$.message", is("Internal server error")));
     }
 
@@ -182,5 +182,4 @@ public class UserControllerTest {
 
         return mockMvc.perform(asyncDispatch(resultActions));
     }
-
 }

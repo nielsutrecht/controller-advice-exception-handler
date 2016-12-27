@@ -29,25 +29,25 @@ public class UserService {
     public List<User> find(Integer age, Integer yearOfBirth, String firstName, String lastName, int limit) {
         Stream<User> s = userDb.values().stream();
 
-        if(age != null) {
-            if(age < 0) {
+        if (age != null) {
+            if (age < 0) {
                 throw InvalidSearchParamException.supplier("age", age).get();
             }
             s = s.filter(u -> u.getAge() == age);
         }
 
-        if(yearOfBirth != null) {
-            if(yearOfBirth < 1000 || yearOfBirth > LocalDate.now().getYear()) {
+        if (yearOfBirth != null) {
+            if (yearOfBirth < 1000 || yearOfBirth > LocalDate.now().getYear()) {
                 throw InvalidSearchParamException.supplier("yearOfBirth", yearOfBirth).get();
             }
             s = s.filter(u -> u.getDateOfBirth().getYear() == yearOfBirth);
         }
 
-        if(firstName != null) {
+        if (firstName != null) {
             s = s.filter(u -> u.getFirstName().equals(firstName));
         }
 
-        if(lastName != null) {
+        if (lastName != null) {
             s = s.filter(u -> u.getLastName().equals(lastName));
         }
 
